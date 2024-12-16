@@ -1,0 +1,597 @@
+#include<stdio.h>
+#include<windows.h>
+#include<conio.h>
+#include<stdlib.h>
+
+char name[20];
+
+int dip_amunt, amunt;
+
+char acc_num[20];
+
+int trans_amunt;
+
+
+//****************SIGNUP VARIABLE***************
+
+char user_name[50];
+
+char user_password[50];
+
+
+//***************LOGIN VARIABLE**************
+
+char input_name[50];
+
+char input_password[50];
+
+char input_acc_num[20];
+
+
+
+//------------------declaring function--------------------------------|
+
+void login();
+
+void signup();
+
+void menu();
+
+void mainmenu();
+
+void deposit_money();
+
+void withdraw_ammount();
+
+void transfermoney();
+
+void transaction_history();
+
+void account_details();
+
+void checkBalance();
+
+
+//--------------------------------------------------------------------|
+
+//------------------EXECUTING ALL FUNCTION----------------------------|
+
+int main()
+{
+
+
+    system("COLOR 0E");
+
+    printf("\n");
+
+    printf("\n\t\t\t\t|.............................WELCOME TO ONLINE BANKING.......................................|\n");
+
+    printf("\t\t\t\t|.............................................................................................|\n");
+
+    printf("\t\t\t\t|.............................................................................................|\n\n\n");
+
+
+   int choice;
+
+    printf("\t\t\t\t1. Sign up\n");
+
+    printf("\t\t\t\t2. Login\n\n\n");
+
+    printf("\t\t\t\tEnter your choice: ");
+
+    scanf("%d", &choice);
+
+    if (choice == 1)
+        {
+        signup();
+    }
+    else if (choice == 2)
+        {
+        login();
+    }
+    else
+        {
+        printf("Invalid choice\n");
+    }
+
+
+    return 0;
+
+}
+
+
+void signup()
+{
+    system("cls");
+
+    FILE *file = fopen("Users_record.txt", "a+");
+
+    if (file == NULL) {
+
+        printf("Error: Could not open file\n");
+
+    }
+
+
+    printf("\t\t\t\t*****************************REGISTRATION PAGE********************************\n");
+
+    printf("\t\t\t\t==============================================================================\n\n");
+
+
+
+    printf("\t\t\t\tEnter a user name: ");
+    scanf("%s",&user_name);
+
+    printf("\n\t\t\t\tEnter a user password: ");
+    scanf("%s", &user_password);
+
+    printf("\n\t\t\t\tEnter a user account number: ");
+    scanf("%s", &acc_num);
+
+    printf("\n\t\t\t\tMinimun deposit money: ");
+    scanf("%d",&amunt);
+
+    printf("\n\t\t\t\tRegistration Successfully Done.\n\n");
+
+    fprintf(file, "%s %s %s \n", user_name, user_password, acc_num );
+
+    fclose(file);
+
+    printf("\t\t\t\tDO YOU WANT TO LOGIN...\n\n");
+
+    int choose;
+
+    printf("\t\t\t\t1.Login\n");
+
+    printf("\t\t\t\t2.Exit\n");
+
+    printf("\n\t\t\t\tEnter your choice: ");
+
+    scanf("%d",&choose);
+
+    if(choose==1)
+    {
+        login();
+    }
+    else if(choose==2)
+    {
+        exit(0);
+    }
+
+    getch();
+}
+
+
+void login()
+{
+    system("cls");
+
+    FILE *file = fopen("Users_record.txt", "r");
+
+    if (file == NULL) {
+
+        printf("Error: Could not open file\n");
+
+    }
+
+
+    printf("\t\t\t\t\t*****************************LOGIN PAGE********************************\n");
+
+    printf("\t\t\t\t\t========================================================================\n\n");
+
+
+
+
+    printf("Enter a user name: ");
+    scanf("%s",&input_name);
+
+    printf("Enter a user password: ");
+    scanf("%s",&input_password);
+
+    printf("Enter a user account number: ");
+    scanf("%s", &input_acc_num);
+
+
+    int found = 0;
+
+//READ FROM THE FILE & CHECK WHEATHER THE ID,PASSWORD AND USER NAME IS CORRECT
+
+    while (fscanf(file, "%s", user_name)==1 && fscanf(file,"%s",user_password)==1 && fscanf(file,"%s",acc_num)==1)
+        {
+        if ((strcmp(user_name, input_name) == 0) && (strcmp(user_password, input_password) == 0) && (strcmp(acc_num,input_acc_num)==0))
+         {
+            found = 1;
+
+            printf("successful Login.\n\n");
+
+         }
+    }
+
+    if(found)
+        {
+             mainmenu();
+        }
+
+     else {
+
+        printf("\n\n\t\t\t\t*******************INVALID USER_NAME, PASSWORD OR ACCOUNT NUMBER*********************\n\n");
+
+        printf("PLEASE TRY AGAIN\n\n");
+
+        printf("Do you want to login again: \n\n");
+
+        int opt;
+
+        printf("1.Login\n");
+
+        printf("2.Exit\n");
+
+        printf("\nEnter your choice: ");
+
+        scanf("%d",&opt);
+
+        if(opt==1)
+          {
+              login();
+          }
+
+        else if(opt==2)
+          {
+            system("cls");
+
+             printf("\n\n\t\t\t\t**********SEE YOU AGAIN.THANK YOU FOR VISITING.**********");
+
+             exit(0);
+
+          }
+
+}
+
+    fclose(file);
+    getch();
+}
+
+
+void mainmenu()
+  {
+
+       int option;
+
+        printf("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+
+        while(1){
+
+        menu();
+
+        printf("\t\t\t\tEnter your choice: ");
+
+        scanf("%d",&option);
+
+
+        menu();
+
+        switch(option)
+        {
+
+        case 1:
+
+            deposit_money();
+
+            break;
+
+        case 2:
+
+            withdraw_ammount();
+
+            break;
+
+        case 3:
+
+            transfermoney();
+
+            break;
+
+
+        case 4:
+
+            account_details();
+
+            break;
+
+         case 5:
+
+            transaction_history();
+
+            break;
+
+        case 6:
+
+            checkBalance();
+
+            break;
+
+        case 7:
+
+            system("cls");
+
+            printf("\n\n");
+
+            printf("\n\n\t\t\t\t**********SEE YOU AGAIN.THANK YOU FOR VISITING.**********");
+
+            exit(0);
+
+            break;
+
+        default:
+
+            printf("invalid choice\n");
+
+        }
+
+        }
+
+}
+
+
+void menu()
+{
+
+    system("cls");
+
+    printf("\t\t\t\t*****************MENU*****************\n");
+    printf("\t\t\t\t======================================\n");
+
+    printf("\n\t\t\t\t1.Deposit Money\n\n");
+
+    printf("\t\t\t\t2.Withdraw Money\n\n");
+
+    printf("\t\t\t\t3.Transfer Money\n\n");
+
+    printf("\t\t\t\t4.Account Details\n\n");
+
+    printf("\t\t\t\t5.Transaction History\n\n");
+
+    printf("\t\t\t\t6.Check Balance\n\n");
+
+    printf("\t\t\t\t7.Exit\n\n");
+
+
+}
+
+void deposit_money()
+{
+
+    system("cls");
+
+    time_t tm;
+
+    time(&tm);
+
+    FILE *ptr;
+
+    ptr=fopen("Account history.txt","a");
+
+    printf("\t\t\t\t*****************************DEPOSIT MONEY************************************\n");
+
+    printf("\t\t\t\t==============================================================================\n\n");
+
+
+    printf("Enter the amount of money you want to deposit: ");
+
+    scanf("%d",&dip_amunt);
+
+    amunt = amunt + dip_amunt;
+
+    printf("Money deposited successfully\n");
+
+    printf("your deposited money is: %d\n",dip_amunt);
+
+    printf("your current total amount is: %d\n",amunt);
+
+    fprintf(ptr,"\n The Deposit Money Details: \n");
+
+    fprintf(ptr,"%d is deposited in your account\n",dip_amunt);
+
+    fprintf(ptr, "Date/time of transaction: %s\n",ctime(&tm));
+
+    fclose(ptr);
+
+    printf("*Press any key to continue...*");
+
+    getch();
+
+}
+
+void withdraw_ammount()
+{
+
+    system("cls");
+
+    time_t tm;
+
+    time(&tm);
+
+    FILE *ptr;
+
+    ptr=fopen("Account history.txt","a");
+
+    int with_amount;
+
+     printf("\t\t\t\t*****************************WITHDRAW MONEY********************************\n");
+
+    printf("\t\t\t\t============================================================================\n\n");
+
+
+    printf("Enter the amount you want to withdraw: ");
+
+    scanf("%d",&with_amount);
+
+    if(amunt>with_amount)
+    {
+
+        amunt=amunt - with_amount;
+
+        printf("Money withdraw successfully done.\n");
+
+        printf("Withdrawl amount is: %d\n",with_amount);
+
+        printf("The total balance is : %d\n",amunt);
+
+    }
+    else
+    {
+        printf("You don't have sufficient balance to withdraw.\n you can able to transfer money under %d tk",amunt);
+
+    }
+
+    fprintf(ptr,"\n The Withdraw money Details: \n");
+
+    fprintf(ptr,"TK %d is withdraw from your account",with_amount);
+
+    fprintf(ptr,"Date/time of transaction : %s",ctime(&tm));
+
+    fclose(ptr);
+
+    printf("*Press any key to continue...*");
+
+    getch();
+
+}
+
+void transfermoney()
+
+{
+
+    system("cls");
+
+    time_t tm;
+
+    time(&tm);
+
+    FILE *ptr;
+
+    ptr=fopen("Account history.txt","a");
+
+    int ac;
+
+    printf("\t\t\t\t*****************************TRANSFER MONEY********************************\n");
+
+    printf("\t\t\t\t==============================================================================\n\n");
+
+    printf("\n\nEnter the amount: ");
+
+    scanf("%d",&trans_amunt);
+
+    printf("\nEnter the account number you want to transfer: ");
+
+    scanf("%d",&ac);
+
+    if(amunt>trans_amunt)
+    {
+
+        amunt=amunt-trans_amunt;
+
+    printf("\nMoney %d transferred successfully in the account no. %d\n",trans_amunt,ac);
+
+    fprintf(ptr,"\n The Transfer Money details : \n");
+
+    fprintf(ptr,"RS %d is transferred successfully.\n",trans_amunt);
+
+    fprintf(ptr,"The account number is %d \n",ac);
+
+    fprintf(ptr,"Date and time of transferred money is %s\n",ctime(&tm));
+
+    }
+
+    else
+    {
+
+        printf("You don't have sufficient balance to transfer.\n you can able to transfer money under %d tk",amunt);
+
+    }
+
+    fclose(ptr);
+
+    printf("\n*Press any key to continue...*");
+
+    getch();
+
+}
+
+
+
+void transaction_history()
+{
+
+    system("cls");
+
+    char num[500];
+
+    printf("\t\t\t\t*****************************TRANSACTION HISTORY********************************\n");
+
+    printf("\t\t\t\t================================================================================\n\n");
+
+
+    FILE *ptr;
+
+    ptr=fopen("Account history.txt","a+");
+
+    if(ptr==NULL)
+    {
+
+        printf("ERROR");
+    }
+
+    while(fscanf(ptr," %s",num)==1)
+    {
+
+        printf(" %s",num);
+    }
+
+    fclose(ptr);
+
+    getch();
+}
+
+
+void account_details()
+
+{
+    system("cls");
+
+    printf("\t\t\t\t*****************************ACCOUNT DETAILS********************************\n");
+
+    printf("\t\t\t\t============================================================================\n\n");
+
+    for(int i=0;i<50;i++) // For design only
+    {
+        printf("-");
+    }
+
+printf("\nName: %s\n\n",input_name);
+
+printf("Account no. : %s\n\n",input_acc_num);
+
+printf("Total Balance: %d\n",amunt);
+
+printf("\n*Press any key to continue...*");
+
+getch();
+}
+
+void checkBalance()
+{
+    system("cls");
+
+    printf("\t\t\t\t*****************************BALANCE********************************\n");
+
+    printf("\t\t\t\t============================================================================\n\n");
+
+    printf("\n\n");
+
+    printf("****Your Available Balance is:  %d\n\n", amunt);
+
+    printf("Press any key to go back to the menu...\n");
+
+    getch();
+}
